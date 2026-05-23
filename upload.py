@@ -1,9 +1,11 @@
 import boto3
 import dotenv
 import os
+import sys
 from botocore.exceptions import ClientError
 
 dotenv.load_dotenv()
+file_to_upload = sys.argv[1] 
 
 s3 = boto3.client(
     's3',
@@ -14,7 +16,7 @@ s3 = boto3.client(
 )
 
 try:
-    s3.upload_file('./CV.pdf', 'myresume', 'CV.pdf')
+    s3.upload_file(file_to_upload, 'myresume', 'CV.pdf')
     print("Upload successful!")
 except ClientError as e:
     print(f"Error: {e}")
