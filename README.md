@@ -18,6 +18,7 @@ I use this repository to maintain an up-to-date version of my CV across all plat
 
 ## Configuration
 
+### Local Development
 Create a `.env` file in the root directory with the following variables:
 
 ```env
@@ -25,6 +26,13 @@ R2_ENDPOINT_URL=your_r2_endpoint_url
 R2_ACCESS_KEY_ID=your_access_key_id
 R2_SECRET_ACCESS_KEY=your_secret_access_key
 ```
+
+### GitHub Actions (Automation)
+To enable automated deployment via GitHub Actions, add the following secrets to your GitHub repository (`Settings > Secrets and variables > Actions`):
+
+- `R2_ENDPOINT_URL`
+- `R2_ACCESS_KEY_ID`
+- `R2_SECRET_ACCESS_KEY`
 
 ## Installation
 
@@ -41,6 +49,20 @@ R2_SECRET_ACCESS_KEY=your_secret_access_key
 
 ## Usage
 
+### Automated Deployment
+The repository is configured with a GitHub Action that automatically uploads `CV.pdf` to your R2 bucket whenever you push changes to `main` involving any of the following files:
+- `CV.pdf`
+- `upload.py`
+- `requirements.txt`
+
+Simply update your `CV.pdf` and push to GitHub:
+```bash
+git add CV.pdf
+git commit -m "Update CV"
+git push origin main
+```
+
+### Manual Upload
 Run the `upload.py` script and pass the path to your file as an argument:
 
 ```bash
