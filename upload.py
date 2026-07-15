@@ -5,7 +5,13 @@ import sys
 from botocore.exceptions import ClientError
 
 dotenv.load_dotenv()
-file_to_upload = sys.argv[1] 
+file_to_upload = os.getenv('FILE_TO_UPLOAD')
+bucket_name = os.getenv('BUCKET_NAME')
+
+if not file_to_upload or not bucket_name:
+    print("Error: FILE_TO_UPLOAD and BUCKET_NAME must be set in .env")
+    sys.exit(1)
+
 
 s3 = boto3.client(
     's3',
@@ -16,7 +22,8 @@ s3 = boto3.client(
 )
 
 try:
-    s3.upload_file(file_to_upload, 'myresume', 'CV.pdf')
+    object_name = os.path.basename(file_to_upload)
+    s3.upload_file(file_to_upload, bucket_name, object_name)
     print("Upload successful!")
 except ClientError as e:
     print(f"Error: {e}")

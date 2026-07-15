@@ -25,6 +25,8 @@ Create a `.env` file in the root directory with the following variables:
 R2_ENDPOINT_URL=your_r2_endpoint_url
 R2_ACCESS_KEY_ID=your_access_key_id
 R2_SECRET_ACCESS_KEY=your_secret_access_key
+BUCKET_NAME=your_bucket_name
+FILE_TO_UPLOAD=your_file_to_upload.txt
 ```
 
 ### GitHub Actions (Automation)
@@ -33,6 +35,8 @@ To enable automated deployment via GitHub Actions, add the following secrets to 
 - `R2_ENDPOINT_URL`
 - `R2_ACCESS_KEY_ID`
 - `R2_SECRET_ACCESS_KEY`
+- `BUCKET_NAME`
+- `FILE_TO_UPLOAD`
 
 ## Installation
 
@@ -50,23 +54,20 @@ To enable automated deployment via GitHub Actions, add the following secrets to 
 ## Usage
 
 ### Automated Deployment
-The repository is configured with a GitHub Action that automatically uploads `CV.pdf` to your R2 bucket whenever you push changes to `main` involving any of the following files:
-- `CV.pdf`
-- `upload.py`
-- `requirements.txt`
+The repository is configured with a GitHub Action that automatically uploads your file to your R2 bucket. This action is triggered when you push changes to the `main` branch involving `CV.pdf` (or related script files) **AND** the commit message contains the phrase `upload new cv`.
 
-Simply update your `CV.pdf` and push to GitHub:
+Simply update your file and push to GitHub with the required commit message:
 ```bash
 git add CV.pdf
-git commit -m "Update CV"
+git commit -m "upload new cv"
 git push origin main
 ```
 
 ### Manual Upload
-Run the `upload.py` script and pass the path to your file as an argument:
+Ensure your `.env` is configured correctly with `BUCKET_NAME` and `FILE_TO_UPLOAD`, then simply run the script:
 
 ```bash
-python upload.py path/to/your/file.ext
+python upload.py
 ```
 
-*Note: By default, the current script is configured to upload to a bucket named `myresume` and save the file as `CV.pdf`. This can be easily modified in `upload.py` to suit other filenames or buckets.*
+*Note: The script will dynamically read the target bucket and file path from your environment configuration.*
